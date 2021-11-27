@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "577561157240",
+    "project_id": "wi-projekt-new",
+    "storage_bucket": "wi-projekt-new.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:577561157240:android:aef218bb864a3d60bc178d",
+        "android_client_info": {
+          "package_name": "dev.wiprojekt.expensetracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "577561157240-b4qltn23eap5vj4km0t1n7kt9b7cva5d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJENjlYHfXJlaHfTZhUW624yA_vEjoiCs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "577561157240-b4qltn23eap5vj4km0t1n7kt9b7cva5d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="dev.wiprojekt.expansetracker.fragments.HistoryFragment"
+        android:label="fragment_history"
+        tools:layout="@layout/fragment_history" >
+        <action
+            android:id="@+id/action_historyFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="dev.wiprojekt.expansetracker.fragments.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_todayFragment"
+            app:destination="@id/todayFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/monthFragment"
+        android:name="dev.wiprojekt.expansetracker.fragments.MonthFragment"
+        android:label="fragment_month"
+        tools:layout="@layout/fragment_month" >
+        <action
+            android:id="@+id/action_monthFragment_to_historyFragment"
+            app:destination="@id/historyFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="dev.wiprojekt.expansetracker.fragments.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/todayFragment"
+        android:name="dev.wiprojekt.expansetracker.fragments.TodayFragment"
+        android:label="fragment_today"
+        tools:layout="@layout/fragment_today" >
+        <action
+            android:id="@+id/action_todayFragment_to_monthFragment"
+            app:destination="@id/monthFragment" />
+    </fragment>
+
+</navigation>

@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">ExpanseTracker</string>
+    <string name="passwort">Passwort</string>
+    <string name="email_adresse">E-Mail-Adresse</string>
+    <string name="image">Image</string>
+    <string name="budget">Budget</string>
+    <string name="heute">Heute</string>
+    <string name="monat">Monat</string>
+    <string name="historie">Historie</string>
+    <string name="einstellungen">Einsellungen</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="buchung">Buchungen</string>
+</resources>
