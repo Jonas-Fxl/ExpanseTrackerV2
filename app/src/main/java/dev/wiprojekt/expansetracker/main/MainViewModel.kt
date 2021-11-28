@@ -3,7 +3,6 @@ package dev.wiprojekt.expansetracker.main
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.scopes.ViewModelScoped
 import dev.wiprojekt.expansetracker.data.Buchung
 import dev.wiprojekt.expansetracker.data.BuchungREPO
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +20,26 @@ class MainViewModel(app : Application) : AndroidViewModel(app){
         viewModelScope.launch(Dispatchers.IO) {
             dataRepo.insertBuchung(buchung)
         }
+    }
+
+    fun getAllExpense(uid: String): Double {
+        return dataRepo.getAllExpense(uid)
+    }
+
+    fun getAllIncome(uid: String): Double {
+            return dataRepo.getAllIncome(uid)
+    }
+
+    fun getAllBuchungenHeute(date: Long): List<Buchung> {
+        return dataRepo.getAllBuchungenHeute(date)
+    }
+
+    fun getAllIncomeHeute(date : Long, uid: String): Double{
+        return dataRepo.getAllIncomeHeute(date, uid)
+    }
+
+    fun getAllExpenseHeute(date : Long, uid: String): Double{
+        return dataRepo.getAllExpenseHeute(date, uid)
     }
 
 }

@@ -1,4 +1,4 @@
-package dev.wiprojekt.expansetracker
+package dev.wiprojekt.expansetracker.Buchung
 
 import android.os.Bundle
 import android.widget.Button
@@ -8,8 +8,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputLayout
+import dev.wiprojekt.expansetracker.R
 import dev.wiprojekt.expansetracker.data.Buchung
 import dev.wiprojekt.expansetracker.main.MainViewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 class NeueBuchung : AppCompatActivity() {
 
@@ -30,7 +33,7 @@ class NeueBuchung : AppCompatActivity() {
         }
 
         schliessen.setOnClickListener {
-
+            finish()
         }
     }
 
@@ -48,7 +51,7 @@ class NeueBuchung : AppCompatActivity() {
         val info = beschreibungText.text.toString()
         if (inputCheck(bezeichnung, summe, datum, art, info)) {
 
-            val buchung = Buchung(0, bezeichnung, art, datum, summe, info)
+            val buchung = Buchung(0, bezeichnung, art, convertDateToLong(datum), summe, info)
             //Enter in Viewmodel
             viewModel.insertBuchung(buchung)
             Toast.makeText(this, "Erfolgreich hinzugefügt!", Toast.LENGTH_LONG).show()
@@ -85,4 +88,20 @@ class NeueBuchung : AppCompatActivity() {
         }
         return true
     }
+
+    fun convertLongToTime(time: Long): String {
+        val date = Date(time)
+        val format = SimpleDateFormat("dd.MM.yyyy")
+        return format.format(date)
+    }
+
+    fun currentTimeToLong(): Long {
+        return System.currentTimeMillis()
+    }
+
+    fun convertDateToLong(date: String): Long {
+        val df = SimpleDateFormat("dd.MM.yyyy")
+        return df.parse(date).time
+    }
+
 }

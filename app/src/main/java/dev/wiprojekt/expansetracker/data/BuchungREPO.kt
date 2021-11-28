@@ -1,15 +1,11 @@
 package dev.wiprojekt.expansetracker.data
 
 import android.app.Application
-import android.widget.Toast
-import androidx.annotation.MainThread
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class BuchungREPO(val application: Application) {
 
@@ -20,23 +16,37 @@ class BuchungREPO(val application: Application) {
     init {
         CoroutineScope(Dispatchers.IO).launch {
             val getAll = dao.getAll(FirebaseAuth.getInstance().currentUser!!.uid)
-            if (getAll.isEmpty()){
-                withContext(Dispatchers.Main){
-                    Toast.makeText(application, "Room Database mit ${getAll.size}", Toast.LENGTH_LONG).show() }
-            }else{
+            if (getAll.isNotEmpty()) {
                 buchungData.postValue(getAll)
-                withContext(Dispatchers.Main){
-                    Toast.makeText(application, "Room Database mit ${getAll.size}", Toast.LENGTH_LONG).show()
-                }
             }
         }
     }
 
-    suspend fun insertBuchung(buchung: Buchung){
+    suspend fun insertBuchung(buchung: Buchung) {
         dao.insertBuchung(buchung)
     }
 
-    private fun networkSync(){ // -> Wenn offline Datenbank leer, Daten aus Firebase ziehen
+    fun getAllIncome(uid: String): Double {
+        return dao.getAllIncome(uid)
+    }
+
+    fun getAllExpense(uid: String): Double {
+        return dao.getAllExpenses(uid)
+    }
+
+    fun getAllBuchungenHeute(date: Long): List<Buchung> {
+        return dao.getAllBuchungenHeute(date)
+    }
+
+    fun getAllIncomeHeute(date: Long, uid: String): Double {
+        return dao.getAllIncomeHeute(date, uid)
+    }
+
+    fun getAllExpenseHeute(date: Long, uid: String): Double {
+        return dao.getAllExpenseHeute(date, uid)
+    }
+
+    private fun networkSync() { // -> Wenn offline Datenbank leer, Daten aus Firebase ziehen
         TODO()
     }
 }

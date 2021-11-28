@@ -10,7 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ExpanseTracker">
         <activity
-            android:name=".NeueBuchung"
+            android:name=".Buchung.NeueAusgabe"
+            android:exported="false" />
+        <activity
+            android:name=".Buchung.NeueBuchung"
             android:exported="false" />
         <activity
             android:name=".Registrierung"

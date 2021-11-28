@@ -7,14 +7,15 @@
         <entry key="app/src/main/res/drawable/ic_baseline_attach_money_24.xml" value="0.25416666666666665" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.1828125" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_neue_ausgabe.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_neue_buchung.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_registrierung.xml" value="0.1828125" />
         <entry key="app/src/main/res/layout/fragment_history.xml" value="0.33177083333333335" />
-        <entry key="app/src/main/res/layout/fragment_main.xml" value="0.33177083333333335" />
+        <entry key="app/src/main/res/layout/fragment_main.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_month.xml" value="0.33177083333333335" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.18229166666666666" />
-        <entry key="app/src/main/res/layout/fragment_today.xml" value="0.18229166666666666" />
-        <entry key="app/src/main/res/layout/grid_item.xml" value="0.33177083333333335" />
+        <entry key="app/src/main/res/layout/fragment_today.xml" value="0.39416058394160586" />
+        <entry key="app/src/main/res/layout/grid_item.xml" value="0.335" />
         <entry key="app/src/main/res/menu/nav_menu.xml" value="0.33177083333333335" />
         <entry key="app/src/main/res/xml/preferences.xml" value="0.1828125" />
       </map>

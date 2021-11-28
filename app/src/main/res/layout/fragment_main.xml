@@ -1,35 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.MainFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
+
         <LinearLayout
             android:id="@+id/layout_budget"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="18dp">
+            android:layout_marginTop="18dp"
+            android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="Budget"
-                android:textStyle="bold"
-                android:textSize="25sp"/>
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/budget"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="250,00 €"
                 android:textSize="30sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
         </LinearLayout>
 
         <com.google.android.material.card.MaterialCardView
@@ -37,8 +41,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/layout_budget"
-            android:layout_marginTop="15dp"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="10dp"
             app:cardCornerRadius="12dp">
 
@@ -47,12 +51,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp">
+
                 <LinearLayout
+                    android:id="@+id/einnahme"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_weight="0.5"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/einnahmen"
                         android:layout_width="wrap_content"
@@ -60,21 +67,25 @@
                         android:text="600,00 €"
                         android:textColor="@color/design_default_color_secondary_variant"
                         android:textSize="26sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Einnahmen"
-                        android:textSize="20sp"
-                        android:textAllCaps="true"/>
+                        android:textAllCaps="true"
+                        android:textSize="20sp" />
 
                 </LinearLayout>
+
                 <LinearLayout
+                    android:id="@+id/ausgabe"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_weight="0.5"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/ausgaben"
                         android:layout_width="wrap_content"
@@ -82,34 +93,18 @@
                         android:text="200,00 €"
                         android:textColor="@color/design_default_color_error"
                         android:textSize="26sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold"
+                        app:autoSizeMaxTextSize="26sp"
+                        app:autoSizeMinTextSize="10sp"
+                        app:autoSizeStepGranularity="1sp"
+                        app:autoSizeTextType="uniform" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Ausgaben"
-                        android:textSize="20sp"
-                        android:textAllCaps="true"/>
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="0.5"
-                    android:gravity="center">
-                    <TextView
-                        android:id="@+id/gesamtsumme"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="600,00 €"
-                        android:textSize="26sp"
-                        android:textStyle="bold"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Ges. SUmme"
-                        android:textSize="20sp"
-                        android:textAllCaps="true"/>
+                        android:textAllCaps="true"
+                        android:textSize="20sp" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -119,35 +114,22 @@
             android:id="@+id/buchung_recyclerview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/buchung"
-            android:textStyle="bold"
-            android:textSize="18sp"
             android:layout_below="@+id/uebersicht"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="14dp"
-            android:layout_marginStart="10dp" />
+            android:text="@string/buchung"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycleView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/buchung_recyclerview"
-            android:layout_marginTop="10dp"/>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/neu_hnzfg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="20dp"
-            android:backgroundTint="@color/greenish"
-            android:clickable="true"
-            android:contentDescription="New Booking"
-            android:focusable="true"
-            app:srcCompat="@drawable/ic_add" />
+            android:backgroundTint="@color/white"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="1" />
 
     </RelativeLayout>
 
