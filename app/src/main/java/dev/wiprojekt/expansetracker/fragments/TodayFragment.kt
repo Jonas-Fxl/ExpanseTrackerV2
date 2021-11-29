@@ -1,7 +1,9 @@
 package dev.wiprojekt.expansetracker.fragments
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,24 +11,31 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import dev.wiprojekt.expansetracker.Buchung.NeueAusgabe
 import dev.wiprojekt.expansetracker.Buchung.NeueBuchung
+import dev.wiprojekt.expansetracker.LOG_TAG
 import dev.wiprojekt.expansetracker.R
+import dev.wiprojekt.expansetracker.data.Buchung
 import dev.wiprojekt.expansetracker.data.BuchungREPO
 import dev.wiprojekt.expansetracker.main.MainRecyclerAdapter
 import dev.wiprojekt.expansetracker.main.MainViewModel
+import dev.wiprojekt.expansetracker.preferences.PrefHelper
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class TodayFragment : Fragment() {
+class TodayFragment : Fragment(),
+    MainRecyclerAdapter.BuchungItemListener {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var repo: BuchungREPO
     private lateinit var mViewModel: MainViewModel
     private lateinit var uid: String
+    private lateinit var navController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,21 +82,32 @@ class TodayFragment : Fragment() {
 
         val data = mViewModel.getAllBuchungenHeute(formatted)
         for (buchung in data) {
-            val adapter = MainRecyclerAdapter(requireContext(), data)
+            val adapter = MainRecyclerAdapter(requireContext(), data, this)
             recyclerView.adapter = adapter
         }
 
-        val einnahmeVal = mViewModel.getAllIncomeHeute(formatted ,uid)
+        val einnahmeVal = mViewModel.getAllIncomeHeute(formatted, uid)
         val ausgabeVal = mViewModel.getAllExpenseHeute(formatted, uid)
 
-        einnahme.text = "%.2f €".format(einnahmeVal).replace(".", ",")
-        ausgabe.text = "%.2f €".format(ausgabeVal).replace(".", ",")
-        budget.text = "%.2f €".format(einnahmeVal + ausgabeVal).replace(".", ",")
+        val pref = PrefHelper
+        pref.loadSettings(requireContext())
+        einnahme.text = "%.2f ${PrefHelper.currency}".format(einnahmeVal)
+        ausgabe.text = "%.2f ${PrefHelper.currency}".format(ausgabeVal)
+        budget.text = "%.2f ${PrefHelper.currency}".format(einnahmeVal + ausgabeVal)
 
     }
 
+    @SuppressLint("SimpleDateFormat")
     fun convertDateToLong(date: String): Long {
         val df = SimpleDateFormat("dd.MM.yyyy")
-        return df.parse(date).time
+        return df.parse(date)!!.time
+    }
+
+    override fun onBuchungItemClick(buchung: Buchung) {
+        Log.i(LOG_TAG, "Ausgewählte Buchung: ${buchung.bezeichnung}")
+        navController = Navigation.findNavController(
+            requireActivity(), R.id.fr_wrapper
+        )
+        navController.navigate(R.id.action_today_to_detailFragment)
     }
 }

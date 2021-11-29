@@ -6,7 +6,7 @@
     <string name="budget">Budget</string>
     <string name="heute">Heute</string>
     <string name="monat">Monat</string>
-    <string name="historie">Historie</string>
+    <string name="historie">Jahr</string>
     <string name="einstellungen">Einsellungen</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

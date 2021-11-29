@@ -11,23 +11,29 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import dev.wiprojekt.expansetracker.Buchung.NeueAusgabe
 import dev.wiprojekt.expansetracker.Buchung.NeueBuchung
 import dev.wiprojekt.expansetracker.LOG_TAG
 import dev.wiprojekt.expansetracker.R
+import dev.wiprojekt.expansetracker.data.Buchung
 import dev.wiprojekt.expansetracker.data.BuchungREPO
 import dev.wiprojekt.expansetracker.main.MainRecyclerAdapter
 import dev.wiprojekt.expansetracker.main.MainViewModel
+import dev.wiprojekt.expansetracker.preferences.PrefHelper
 
 
-class MainFragment : Fragment() {
+class MainFragment : Fragment(),
+    MainRecyclerAdapter.BuchungItemListener {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var repo: BuchungREPO
     private lateinit var mViewModel: MainViewModel
     private lateinit var uid: String
+    private lateinit var navController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +44,9 @@ class MainFragment : Fragment() {
         mViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         recyclerView = view.findViewById(R.id.recycleView)
         repo = activity?.let { BuchungREPO(it.application) }!!
+        navController = Navigation.findNavController(
+            requireActivity(), R.id.fr_wrapper
+        )
 
         return view
     }
@@ -69,16 +78,23 @@ class MainFragment : Fragment() {
             val einnahmeVal = mViewModel.getAllIncome(uid)
             val ausgabeVal = mViewModel.getAllExpense(uid)
             for (buchung in it) {
-                val adapter = MainRecyclerAdapter(requireContext(), it)
+                val adapter = MainRecyclerAdapter(requireContext(), it, this)
                 recyclerView.adapter = adapter
                 Log.i(
                     LOG_TAG,
                     "${buchung.bezeichnung} (\$${buchung.summe}) at ${buchung.createdAtDateFormat} from \$${buchung.userID}"
                 )
             }
-            einnahme.text = "%.2f €".format(einnahmeVal).replace(".", ",")
-            ausgabe.text = "%.2f €".format(ausgabeVal).replace(".", ",")
-            budget.text = "%.2f €".format(einnahmeVal + ausgabeVal).replace(".", ",")
+            val pref = PrefHelper
+            pref.loadSettings(requireContext())
+            einnahme.text = "%.2f ${PrefHelper.currency}".format(einnahmeVal)
+            ausgabe.text = "%.2f ${PrefHelper.currency}".format(ausgabeVal)
+            budget.text = "%.2f ${PrefHelper.currency}".format(einnahmeVal + ausgabeVal)
         })
+    }
+
+    override fun onBuchungItemClick(buchung: Buchung) {
+        Log.i(LOG_TAG, "Ausgewählte Buchung: ${buchung.bezeichnung}")
+        navController.navigate(R.id.action_main_to_detailFragment)
     }
 }

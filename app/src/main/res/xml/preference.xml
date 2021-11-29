@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Buchungsdetails">
+        <ListPreference
+            android:defaultValue="EUR"
+            android:entries="@array/currencys"
+            android:entryValues="@array/values"
+            android:key="pre_cur"
+            android:title="Währung" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Account">
+
+        <SwitchPreferenceCompat
+            android:key="pre_loggin"
+            android:title="Eingeloggt bleiben"
+            android:defaultValue="true"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
