@@ -91,9 +91,10 @@ class TodayFragment : Fragment(),
 
         val pref = PrefHelper
         pref.loadSettings(requireContext())
+        val tagesBudget = pref.budget.toDouble() * 12 / 365
         einnahme.text = "%.2f ${PrefHelper.currency}".format(einnahmeVal)
         ausgabe.text = "%.2f ${PrefHelper.currency}".format(ausgabeVal)
-        budget.text = "%.2f ${PrefHelper.currency}".format(einnahmeVal + ausgabeVal)
+        budget.text = "%.2f ${PrefHelper.currency}".format(tagesBudget + einnahmeVal + ausgabeVal)
 
     }
 

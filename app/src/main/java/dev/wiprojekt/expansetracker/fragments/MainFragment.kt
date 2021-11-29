@@ -87,9 +87,11 @@ class MainFragment : Fragment(),
             }
             val pref = PrefHelper
             pref.loadSettings(requireContext())
+            val budget_value = PrefHelper.budget.toDouble()*12
             einnahme.text = "%.2f ${PrefHelper.currency}".format(einnahmeVal)
             ausgabe.text = "%.2f ${PrefHelper.currency}".format(ausgabeVal)
-            budget.text = "%.2f ${PrefHelper.currency}".format(einnahmeVal + ausgabeVal)
+            budget.text =
+                "%.2f ${PrefHelper.currency}".format((einnahmeVal + budget_value) + ausgabeVal)
         })
     }
 
