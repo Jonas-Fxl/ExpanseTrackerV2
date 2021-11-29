@@ -21,4 +21,9 @@ class SharedViewModel(app: Application) : AndroidViewModel(app) {
             dataRepo.updateBuchung(buchung)
         }
     }
+
+    fun deleteBuchung(bid: Int){
+        viewModelScope.launch(Dispatchers.IO) {
+            dataRepo.deleteBuchung(bid)
+        }    }
 }

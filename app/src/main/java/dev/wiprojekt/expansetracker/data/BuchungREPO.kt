@@ -50,6 +50,10 @@ class BuchungREPO(val application: Application) {
         dao.updateBuchung(buchung)
     }
 
+    suspend fun deleteBuchung(bid: Int){
+        dao.deleteBuchung(bid)
+    }
+
     private fun networkSync() { // -> Wenn offline Datenbank leer, Daten aus Firebase ziehen
         TODO()
     }

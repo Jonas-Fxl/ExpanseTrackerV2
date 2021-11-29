@@ -14,6 +14,9 @@ interface BuchungDAO {
     @Query("DELETE FROM buchungen")
     suspend fun deleteAll()
 
+    @Query("DELETE FROM buchungen WHERE rowid == :bid")
+    suspend fun deleteBuchung(bid: Int)
+
     @Insert
     suspend fun insertBuchung(buchung: Buchung)
 

@@ -7,19 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.google.android.material.textfield.TextInputLayout
 import dev.wiprojekt.expansetracker.data.Buchung
-import dev.wiprojekt.expansetracker.main.MainViewModel
 import dev.wiprojekt.expansetracker.main.SharedViewModel
-import org.w3c.dom.Text
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -55,21 +51,28 @@ class DetailFragment : Fragment() {
         datumText.text = convertLongToTime(mViewModel.selectetBuchung.value!!.datum)
         artText.text = mViewModel.selectetBuchung.value?.art
         beschreibungText.text = mViewModel.selectetBuchung.value?.beleg
-        hinzugefuegtText.text = "Hinzugefügt am: " + convertLongToTime(mViewModel.selectetBuchung.value!!.hinzugefuegt)
+        hinzugefuegtText.text =
+            "Hinzugefügt am: " + convertLongToTime(mViewModel.selectetBuchung.value!!.hinzugefuegt)
         buchungID.text = "Buchungs-ID: " + mViewModel.selectetBuchung.value?.buchungId.toString()
 
         val update = view.findViewById<Button>(R.id.buchungspeichern)
         update.setOnClickListener {
-            updateBuchung(buchungID, beschreibungText, artText, datumText, summeText, bezeichnungText)
-
-            val navController = Navigation.findNavController(
-                requireActivity(), R.id.fr_wrapper
+            updateBuchung(
+                buchungID,
+                beschreibungText,
+                artText,
+                datumText,
+                summeText,
+                bezeichnungText
             )
-            if (mViewModel.herkunft == "Main"){
-                navController.navigate(R.id.action_detailFragment_to_mainFragment)
-            }else if (mViewModel.herkunft == "Today"){
-                navController.navigate(R.id.action_detailFragment_to_todayFragment)
-            }
+
+            navigateBack()
+        }
+
+        val loeschen = view.findViewById<Button>(R.id.loeschen)
+        loeschen.setOnClickListener {
+            loeschen(mViewModel.selectetBuchung.value!!.buchungId)
+            navigateBack()
         }
 
         return view
@@ -87,7 +90,14 @@ class DetailFragment : Fragment() {
         return df.parse(date)!!.time
     }
 
-    private fun updateBuchung(buchungID : TextView ,beschreibungText : TextView, artText : TextView, datumText : TextView, summeText : TextView, bezeichnungText : TextView){
+    private fun updateBuchung(
+        buchungID: TextView,
+        beschreibungText: TextView,
+        artText: TextView,
+        datumText: TextView,
+        summeText: TextView,
+        bezeichnungText: TextView
+    ) {
 
         val bezeichnung = bezeichnungText.text.toString()
         val summe = summeText.text.toString().toDouble()
@@ -133,5 +143,21 @@ class DetailFragment : Fragment() {
             return false
         }
         return true
+    }
+
+    private fun navigateBack() {
+        val navController = Navigation.findNavController(
+            requireActivity(), R.id.fr_wrapper
+        )
+        if (mViewModel.herkunft == "Main") {
+            navController.navigate(R.id.action_detailFragment_to_mainFragment)
+        } else if (mViewModel.herkunft == "Today") {
+            navController.navigate(R.id.action_detailFragment_to_todayFragment)
+        }
+    }
+
+    private fun loeschen(bid: Int){
+        mViewModel.deleteBuchung(bid)
+        Toast.makeText(requireContext(), "Buchung wurde gelöscht", Toast.LENGTH_LONG).show()
     }
 }

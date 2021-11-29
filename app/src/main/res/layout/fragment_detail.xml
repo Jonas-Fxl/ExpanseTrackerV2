@@ -21,6 +21,8 @@
             android:layout_width="34dp"
             android:layout_height="34dp"
             android:layout_margin="12dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="16dp"
             android:background="@drawable/schliessen_bhng"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -177,6 +179,16 @@
                 android:background="@color/greenish"
                 android:text="Buchung Speichern"
                 android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/loeschen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:backgroundTint="@color/red"
+                android:text="Buchung Löschen"
+                android:textColor="@color/white"/>
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
