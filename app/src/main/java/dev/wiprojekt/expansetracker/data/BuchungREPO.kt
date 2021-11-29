@@ -46,6 +46,10 @@ class BuchungREPO(val application: Application) {
         return dao.getAllExpenseHeute(date, uid)
     }
 
+    suspend fun updateBuchung(buchung: Buchung){
+        dao.updateBuchung(buchung)
+    }
+
     private fun networkSync() { // -> Wenn offline Datenbank leer, Daten aus Firebase ziehen
         TODO()
     }

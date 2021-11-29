@@ -21,5 +21,5 @@ data class Buchung(
 ) : Serializable {
     val createdAtDateFormat: String
         get() = DateFormat.getDateTimeInstance()
-            .format(hinzugefuegt) // Date Format: Jan 11, 2021, 11:30 AM
+            .format(hinzugefuegt)
 }

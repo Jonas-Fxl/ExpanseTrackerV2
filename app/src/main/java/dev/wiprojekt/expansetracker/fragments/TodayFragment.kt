@@ -23,6 +23,7 @@ import dev.wiprojekt.expansetracker.data.Buchung
 import dev.wiprojekt.expansetracker.data.BuchungREPO
 import dev.wiprojekt.expansetracker.main.MainRecyclerAdapter
 import dev.wiprojekt.expansetracker.main.MainViewModel
+import dev.wiprojekt.expansetracker.main.SharedViewModel
 import dev.wiprojekt.expansetracker.preferences.PrefHelper
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -105,7 +106,9 @@ class TodayFragment : Fragment(),
     }
 
     override fun onBuchungItemClick(buchung: Buchung) {
-        Log.i(LOG_TAG, "Ausgewählte Buchung: ${buchung.bezeichnung}")
+        val newViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
+        newViewModel.selectetBuchung.value = buchung
+        newViewModel.herkunft = "Today"
         navController = Navigation.findNavController(
             requireActivity(), R.id.fr_wrapper
         )

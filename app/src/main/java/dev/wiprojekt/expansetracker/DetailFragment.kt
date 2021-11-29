@@ -1,59 +1,137 @@
 package dev.wiprojekt.expansetracker
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
+import androidx.databinding.BindingAdapter
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
+import com.google.android.material.textfield.TextInputLayout
+import dev.wiprojekt.expansetracker.data.Buchung
+import dev.wiprojekt.expansetracker.main.MainViewModel
+import dev.wiprojekt.expansetracker.main.SharedViewModel
+import org.w3c.dom.Text
+import java.text.SimpleDateFormat
+import java.util.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [DetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class DetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var mViewModel: SharedViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail, container, false)
+
+        mViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
+
+        mViewModel.selectetBuchung.observe(viewLifecycleOwner, Observer {
+            Log.i(LOG_TAG, "Selected: ${it.bezeichnung}")
+        })
+
+        val view = inflater.inflate(R.layout.fragment_detail, container, false)
+
+        val headerText = view.findViewById<TextView>(R.id.detail_neue_ausgabe)
+        val bezeichnungText = view.findViewById<TextView>(R.id.bezeichnungText)
+        val summeText = view.findViewById<TextView>(R.id.summeText)
+        val datumText = view.findViewById<TextView>(R.id.datumText)
+        val artText = view.findViewById<TextView>(R.id.artText)
+        val beschreibungText = view.findViewById<TextView>(R.id.beschreibungText)
+        val hinzugefuegtText = view.findViewById<TextView>(R.id.detailHinzugefuegt)
+        val buchungID = view.findViewById<TextView>(R.id.detailBuchungsnummer)
+
+        headerText.text = mViewModel.selectetBuchung.value?.bezeichnung
+        bezeichnungText.text = headerText.text
+        summeText.text = mViewModel.selectetBuchung.value?.summe.toString()
+        datumText.text = convertLongToTime(mViewModel.selectetBuchung.value!!.datum)
+        artText.text = mViewModel.selectetBuchung.value?.art
+        beschreibungText.text = mViewModel.selectetBuchung.value?.beleg
+        hinzugefuegtText.text = "Hinzugefügt am: " + convertLongToTime(mViewModel.selectetBuchung.value!!.hinzugefuegt)
+        buchungID.text = "Buchungs-ID: " + mViewModel.selectetBuchung.value?.buchungId.toString()
+
+        val update = view.findViewById<Button>(R.id.buchungspeichern)
+        update.setOnClickListener {
+            updateBuchung(buchungID, beschreibungText, artText, datumText, summeText, bezeichnungText)
+
+            val navController = Navigation.findNavController(
+                requireActivity(), R.id.fr_wrapper
+            )
+            if (mViewModel.herkunft == "Main"){
+                navController.navigate(R.id.action_detailFragment_to_mainFragment)
+            }else if (mViewModel.herkunft == "Today"){
+                navController.navigate(R.id.action_detailFragment_to_todayFragment)
+            }
+        }
+
+        return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    fun convertLongToTime(time: Long): String {
+        val date = Date(time)
+        val format = SimpleDateFormat("dd.MM.yyyy")
+        return format.format(date)
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun convertDateToLong(date: String): Long {
+        val df = SimpleDateFormat("dd.MM.yyyy")
+        return df.parse(date)!!.time
+    }
+
+    private fun updateBuchung(buchungID : TextView ,beschreibungText : TextView, artText : TextView, datumText : TextView, summeText : TextView, bezeichnungText : TextView){
+
+        val bezeichnung = bezeichnungText.text.toString()
+        val summe = summeText.text.toString().toDouble()
+        val datum = datumText.text.toString()
+        val art = artText.text.toString()
+        val info = beschreibungText.text.toString()
+        val id = mViewModel.selectetBuchung.value!!.buchungId
+        if (inputCheck(bezeichnung, summe, datum, art, info)) {
+
+            val buchung = Buchung(id, bezeichnung, art, convertDateToLong(datum), summe, info)
+            //Enter in Viewmodel
+            mViewModel.updateBuchung(buchung)
+            Toast.makeText(requireContext(), "Erfolgreiches UPDATE!", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun inputCheck(
+        bezeichnung: String,
+        summe: Double?,
+        datum: String,
+        art: String,
+        info: String
+    ): Boolean {
+        if (bezeichnung.isEmpty()) {
+            val bezeichung_layout = view?.findViewById<TextInputLayout>(R.id.bezeichung_layout)
+            bezeichung_layout?.error = "Bitte eine Bezeichnung eingeben."
+            return false
+        }
+        if (art.isEmpty()) {
+            val art_layout = view?.findViewById<TextInputLayout>(R.id.art_layout)
+            art_layout?.error = "Bitte definieren: Budget, Einnahme, Ausgabe."
+            return false
+        }
+
+        if (datum.isEmpty()) {
+            val datum_layout = view?.findViewById<TextInputLayout>(R.id.datum_layout)
+            datum_layout?.error = "Geben Sie ein gültiges Datum ein."
+            return false
+        }
+        if (summe == null) {
+            val summe_layout = view?.findViewById<TextInputLayout>(R.id.summe_layout)
+            summe_layout?.error = "Bitte Betrag eingeben."
+            return false
+        }
+        return true
     }
 }

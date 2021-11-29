@@ -10,6 +10,8 @@
         <entry key="app/src/main/res/layout/activity_neue_ausgabe.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_neue_buchung.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_registrierung.xml" value="0.1828125" />
+        <entry key="app/src/main/res/layout/fragment_detail.xml" value="0.18385416666666668" />
+        <entry key="app/src/main/res/layout/fragment_detaile.xml" value="0.33177083333333335" />
         <entry key="app/src/main/res/layout/fragment_history.xml" value="0.33177083333333335" />
         <entry key="app/src/main/res/layout/fragment_main.xml" value="0.18229166666666666" />
         <entry key="app/src/main/res/layout/fragment_month.xml" value="0.33177083333333335" />

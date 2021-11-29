@@ -23,6 +23,7 @@ import dev.wiprojekt.expansetracker.data.Buchung
 import dev.wiprojekt.expansetracker.data.BuchungREPO
 import dev.wiprojekt.expansetracker.main.MainRecyclerAdapter
 import dev.wiprojekt.expansetracker.main.MainViewModel
+import dev.wiprojekt.expansetracker.main.SharedViewModel
 import dev.wiprojekt.expansetracker.preferences.PrefHelper
 
 
@@ -48,11 +49,6 @@ class MainFragment : Fragment(),
             requireActivity(), R.id.fr_wrapper
         )
 
-        return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         uid = FirebaseAuth.getInstance().currentUser!!.uid
         val budget = view.findViewById<TextView>(R.id.budget)
         val einnahme = view.findViewById<TextView>(R.id.einnahmen)
@@ -73,8 +69,8 @@ class MainFragment : Fragment(),
                 it.startActivity(intent)
             }
         }
-        mViewModel.buchungData.observe(viewLifecycleOwner, Observer
-        {
+
+        mViewModel.buchungData.observe(viewLifecycleOwner, {
             val einnahmeVal = mViewModel.getAllIncome(uid)
             val ausgabeVal = mViewModel.getAllExpense(uid)
             for (buchung in it) {
@@ -93,9 +89,17 @@ class MainFragment : Fragment(),
             budget.text =
                 "%.2f ${PrefHelper.currency}".format((einnahmeVal + budget_value) + ausgabeVal)
         })
+
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     }
 
     override fun onBuchungItemClick(buchung: Buchung) {
+        val newViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
+        newViewModel.selectetBuchung.value = buchung
+        newViewModel.herkunft = "Main"
         Log.i(LOG_TAG, "Ausgewählte Buchung: ${buchung.bezeichnung}")
         navController.navigate(R.id.action_main_to_detailFragment)
     }
