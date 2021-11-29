@@ -51,9 +51,8 @@ class NeueAusgabe : AppCompatActivity() {
         val info = beschreibungText.text.toString()
         if (inputCheck(bezeichnung, summe, datum, art, info)) {
 
-            val buchung = Buchung(0, bezeichnung, art, convertDateToLong(datum), summe, info)
-            //Enter in Viewmodel
-            viewModel.insertBuchung(buchung)
+            //val buchung = Buchung(0, bezeichnung, art, convertDateToLong(datum), summe, info)
+            //viewModel.insertBuchung(buchung)
             Toast.makeText(this, "Erfolgreich hinzugefügt!", Toast.LENGTH_LONG).show()
         }
     }

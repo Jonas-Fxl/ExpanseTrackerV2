@@ -1,11 +1,11 @@
 package dev.wiprojekt.expansetracker.data
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room.*
+import dev.wiprojekt.expansetracker.Buchung.BitmapKonverter
 
 @Database(entities = [Buchung::class], version = 1, exportSchema = false)
+@TypeConverters(BitmapKonverter::class)
 abstract class BuchungDatenbank: RoomDatabase() {
 
     abstract fun buchungDao() : BuchungDAO

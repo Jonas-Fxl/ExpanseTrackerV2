@@ -1,14 +1,19 @@
 package dev.wiprojekt.expansetracker
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -55,6 +60,9 @@ class DetailFragment : Fragment() {
             "Hinzugefügt am: " + convertLongToTime(mViewModel.selectetBuchung.value!!.hinzugefuegt)
         buchungID.text = "Buchungs-ID: " + mViewModel.selectetBuchung.value?.buchungId.toString()
 
+        view.findViewById<ImageView>(R.id.fotoPreview).setImageBitmap(mViewModel.selectetBuchung.value?.datei)
+
+
         val update = view.findViewById<Button>(R.id.buchungspeichern)
         update.setOnClickListener {
             updateBuchung(
@@ -63,7 +71,8 @@ class DetailFragment : Fragment() {
                 artText,
                 datumText,
                 summeText,
-                bezeichnungText
+                bezeichnungText,
+                view.findViewById<ImageView>(R.id.fotoPreview).drawable.toBitmap()
             )
 
             navigateBack()
@@ -73,6 +82,22 @@ class DetailFragment : Fragment() {
         loeschen.setOnClickListener {
             loeschen(mViewModel.selectetBuchung.value!!.buchungId)
             navigateBack()
+        }
+
+        val getImage = registerForActivityResult(
+            ActivityResultContracts.GetContent()
+        ) {
+
+            view.findViewById<ImageView>(R.id.fotoPreview).setImageURI(it)
+            Log.i(LOG_TAG, "Hinzugefuegt: " + it.toString())
+
+        }
+
+
+        view.findViewById<Button>(R.id.takePhoto).setOnClickListener {
+
+            getImage.launch("image/*")
+
         }
 
         return view
@@ -96,7 +121,8 @@ class DetailFragment : Fragment() {
         artText: TextView,
         datumText: TextView,
         summeText: TextView,
-        bezeichnungText: TextView
+        bezeichnungText: TextView,
+        bitmap: Bitmap
     ) {
 
         val bezeichnung = bezeichnungText.text.toString()
@@ -105,12 +131,13 @@ class DetailFragment : Fragment() {
         val art = artText.text.toString()
         val info = beschreibungText.text.toString()
         val id = mViewModel.selectetBuchung.value!!.buchungId
+
         if (inputCheck(bezeichnung, summe, datum, art, info)) {
 
-            val buchung = Buchung(id, bezeichnung, art, convertDateToLong(datum), summe, info)
+            val buchung = Buchung(id, bezeichnung, art, convertDateToLong(datum), summe, info, bitmap)
             //Enter in Viewmodel
             mViewModel.updateBuchung(buchung)
-            Toast.makeText(requireContext(), "Erfolgreiches UPDATE!", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "Erfolgreich hinzugefügt!", Toast.LENGTH_LONG).show()
         }
     }
 

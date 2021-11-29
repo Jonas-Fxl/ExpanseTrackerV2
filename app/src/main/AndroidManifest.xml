@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ExpanseTracker">
         <activity
+            android:name=".Kamera"
+            android:exported="false" />
+        <activity
             android:name=".Buchung.NeueAusgabe"
             android:exported="false" />
         <activity

@@ -1,5 +1,6 @@
 package dev.wiprojekt.expansetracker.data
 
+import android.graphics.Bitmap
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -16,6 +17,7 @@ data class Buchung(
     @ColumnInfo(name = "datum") val datum: Long,
     @ColumnInfo(name = "summe") val summe: Double,
     @ColumnInfo(name = "info") val beleg: String?,
+    @ColumnInfo(name = "beleg") val datei : Bitmap,
     @ColumnInfo(name = "uid") val userID: String = FirebaseAuth.getInstance().currentUser!!.uid,
     @ColumnInfo(name = "hinzugefuegt") val hinzugefuegt: Long = System.currentTimeMillis() // wird autofilled
 ) : Serializable {
