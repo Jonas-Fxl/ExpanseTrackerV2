@@ -1,19 +1,19 @@
 package dev.wiprojekt.expansetracker.fragments
 
-import android.content.Intent
+import android.app.DatePickerDialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import dev.wiprojekt.expansetracker.Buchung.NeueAusgabe
-import dev.wiprojekt.expansetracker.Kamera
+import android.widget.Button
+import android.widget.TextView
+import androidx.fragment.app.Fragment
 import dev.wiprojekt.expansetracker.R
-import dev.wiprojekt.expansetracker.databinding.FragmentMonthBinding
-
-private lateinit var binding: FragmentMonthBinding
+import java.util.*
+import java.util.Calendar.DAY_OF_MONTH
 
 class MonthFragment : Fragment() {
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -21,16 +21,41 @@ class MonthFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
 
-        val view =  inflater.inflate(R.layout.fragment_month, container, false)
+        val view = inflater.inflate(R.layout.fragment_month, container, false)
 
-        binding = FragmentMonthBinding.bind(view)
-        binding.btn.setOnClickListener {
-            activity?.let {
-                val intent = Intent(it, Kamera::class.java)
-                it.startActivity(intent)
-            }
+        val cal = Calendar.getInstance()
+        val tv = view.findViewById<TextView>(R.id.textView)
+        val year = cal.get(Calendar.YEAR)
+        val month = cal.get(Calendar.MONTH)
+        var m = ""
+        var d = ""
+        val day = cal.get(DAY_OF_MONTH)
+
+        view.findViewById<Button>(R.id.btn).setOnClickListener {
+            val datePicker = DatePickerDialog(
+                requireContext(),
+                DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                    m = if (month + 1 < 10) {
+                        "0" + (month + 1).toString()
+                    } else {
+                        (month + 1).toString()
+                    }
+                    d = if (dayOfMonth < 10) {
+                        "0$dayOfMonth"
+                    } else {
+                        dayOfMonth.toString()
+                    }
+                    tv?.text = "${d}.${m}.${year}"
+                },
+                year,
+                month,
+                day
+            )
+            datePicker.show()
         }
 
         return view
     }
+
+
 }

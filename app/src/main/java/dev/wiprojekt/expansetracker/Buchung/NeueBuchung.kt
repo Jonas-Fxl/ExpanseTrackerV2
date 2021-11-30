@@ -1,31 +1,56 @@
 package dev.wiprojekt.expansetracker.Buchung
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputLayout
+import dev.wiprojekt.expansetracker.LOG_TAG
 import dev.wiprojekt.expansetracker.R
 import dev.wiprojekt.expansetracker.data.Buchung
+import dev.wiprojekt.expansetracker.databinding.ActivityNeueAusgabeBinding
+import dev.wiprojekt.expansetracker.databinding.ActivityNeueBuchungBinding
 import dev.wiprojekt.expansetracker.main.MainViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
 class NeueBuchung : AppCompatActivity() {
 
+    private lateinit var binding:  ActivityNeueBuchungBinding
     private lateinit var viewModel: MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_neue_buchung)
+        binding = ActivityNeueBuchungBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         val buchungspeichern = findViewById<Button>(R.id.buchungspeichern)
         val schliessen = findViewById<ImageButton>(R.id.schliessen)
 
+
+        val getImage = registerForActivityResult(
+            ActivityResultContracts.GetContent(),
+            ActivityResultCallback {
+
+                binding.fotoPreview.setImageURI(it)
+                Log.i(LOG_TAG, "Hinzugefuegt: " + it.toString())
+
+            }
+        )
+
+        binding.takePhoto.setOnClickListener {
+
+            getImage.launch("image/*")
+
+        }
 
         buchungspeichern.setOnClickListener {
             insertDataToDatabase()
@@ -51,9 +76,11 @@ class NeueBuchung : AppCompatActivity() {
         val info = beschreibungText.text.toString()
         if (inputCheck(bezeichnung, summe, datum, art, info)) {
 
-            //val buchung = Buchung(0, bezeichnung, art, convertDateToLong(datum), summe, info)
+            val bitmap = binding.fotoPreview.drawable.toBitmap()
+
+            val buchung = Buchung(0, bezeichnung, art, convertDateToLong(datum), summe, info, bitmap)
             //Enter in Viewmodel
-            //viewModel.insertBuchung(buchung)
+            viewModel.insertBuchung(buchung)
             Toast.makeText(this, "Erfolgreich hinzugefügt!", Toast.LENGTH_LONG).show()
         }
     }

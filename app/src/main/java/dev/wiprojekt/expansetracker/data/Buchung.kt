@@ -1,10 +1,13 @@
 package dev.wiprojekt.expansetracker.data
 
+import android.content.res.Resources
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.firebase.auth.FirebaseAuth
+import dev.wiprojekt.expansetracker.R
 import java.io.Serializable
 import java.text.DateFormat
 import java.util.*

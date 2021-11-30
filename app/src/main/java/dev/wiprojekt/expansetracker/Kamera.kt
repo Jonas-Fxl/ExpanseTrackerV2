@@ -10,6 +10,7 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.graphics.drawable.toDrawable
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputLayout
 import dev.wiprojekt.expansetracker.data.Buchung
@@ -28,6 +29,7 @@ class Kamera : AppCompatActivity() {
         setContentView(binding.root)
 
 
+
         val getImage = registerForActivityResult(
             ActivityResultContracts.GetContent(),
             ActivityResultCallback {
@@ -37,7 +39,6 @@ class Kamera : AppCompatActivity() {
 
             }
         )
-
 
         binding.takePhoto.setOnClickListener {
 
@@ -78,10 +79,11 @@ private fun insertDataToDatabase() {
 
     if (inputCheck(bezeichnung, summe, datum, art, info)) {
 
-        val buchung = Buchung(0, bezeichnung, art, convertDateToLong(datum), summe, info, bitmap)
-        //Enter in Viewmodel
-        viewModel.insertBuchung(buchung)
-        Toast.makeText(this, "Erfolgreich hinzugefügt!", Toast.LENGTH_LONG).show()
+            val buchung =
+                Buchung(0, bezeichnung, art, convertDateToLong(datum), summe, info, bitmap)
+            //Enter in Viewmodel
+            viewModel.insertBuchung(buchung)
+            Toast.makeText(this, "Erfolgreich hinzugefügt!", Toast.LENGTH_LONG).show()
     }
 }
 

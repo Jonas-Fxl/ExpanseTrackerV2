@@ -140,6 +140,23 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
+            android:id="@+id/takePhoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Foto"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"/>
+
+        <ImageView
+            android:id="@+id/fotoPreview"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_money"/>
+
+        <Button
             android:id="@+id/buchungspeichern"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
