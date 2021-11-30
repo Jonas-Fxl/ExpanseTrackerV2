@@ -36,8 +36,8 @@ class MainViewModel(app : Application) : AndroidViewModel(app){
             return dataRepo.getAllIncome(uid)
     }
 
-    fun getAllBuchungenHeute(date: Long): List<Buchung> {
-        return dataRepo.getAllBuchungenHeute(date)
+    fun getAllBuchungenHeute(date: Long, uid: String): List<Buchung> {
+        return dataRepo.getAllBuchungenHeute(date, uid)
     }
 
     fun getAllIncomeHeute(date : Long, uid: String): Double{
@@ -46,6 +46,18 @@ class MainViewModel(app : Application) : AndroidViewModel(app){
 
     fun getAllExpenseHeute(date : Long, uid: String): Double{
         return dataRepo.getAllExpenseHeute(date, uid)
+    }
+
+    fun getAllBuchungenMonat(startDatum: Long, endDatum: Long, uid: String): List<Buchung>{
+        return dataRepo.getAllBuchungenMonat(startDatum, endDatum, uid)
+    }
+
+    fun getAllIncomeMonth(startDatum: Long, endDatum: Long, uid: String): Double{
+        return dataRepo.getAllIncomeMonth(startDatum, endDatum, uid)
+    }
+
+    fun getAllExpenseMonth(startDatum: Long, endDatum: Long, uid: String): Double{
+        return dataRepo.getAllExpenseMonth(startDatum, endDatum, uid)
     }
 
 }

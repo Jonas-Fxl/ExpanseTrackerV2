@@ -34,8 +34,8 @@ class BuchungREPO(val application: Application) {
         return dao.getAllExpenses(uid)
     }
 
-    fun getAllBuchungenHeute(date: Long): List<Buchung> {
-        return dao.getAllBuchungenHeute(date)
+    fun getAllBuchungenHeute(date: Long, uid: String): List<Buchung> {
+        return dao.getAllBuchungenHeute(date, uid)
     }
 
     fun getAllIncomeHeute(date: Long, uid: String): Double {
@@ -52,6 +52,18 @@ class BuchungREPO(val application: Application) {
 
     suspend fun deleteBuchung(bid: Int){
         dao.deleteBuchung(bid)
+    }
+
+    fun getAllBuchungenMonat(startDatum: Long, endDatum: Long, uid: String): List<Buchung>{
+        return dao.getAllBuchungenMonat(startDatum, endDatum, uid)
+    }
+
+    fun getAllIncomeMonth(startDatum: Long, endDatum: Long, uid: String): Double{
+        return dao.getAllIncomeMonth(startDatum, endDatum, uid)
+    }
+
+    fun getAllExpenseMonth(startDatum: Long, endDatum: Long, uid: String): Double{
+        return dao.getAllExpenseMonth(startDatum, endDatum, uid)
     }
 
     private fun networkSync() { // -> Wenn offline Datenbank leer, Daten aus Firebase ziehen

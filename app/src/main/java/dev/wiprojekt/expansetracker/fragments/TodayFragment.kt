@@ -81,7 +81,7 @@ class TodayFragment : Fragment(),
         val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
         val formatted = convertDateToLong(current.format(formatter))
 
-        val data = mViewModel.getAllBuchungenHeute(formatted)
+        val data = mViewModel.getAllBuchungenHeute(formatted, uid)
         for (buchung in data) {
             val adapter = MainRecyclerAdapter(requireContext(), data, this)
             recyclerView.adapter = adapter

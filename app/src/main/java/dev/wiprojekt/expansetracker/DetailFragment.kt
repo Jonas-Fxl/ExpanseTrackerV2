@@ -77,6 +77,10 @@ class DetailFragment : Fragment() {
             navigateBack()
         }
 
+        view.findViewById<Button>(R.id.schliessen).setOnClickListener {
+            navigateBack()
+        }
+
         val loeschen = view.findViewById<Button>(R.id.loeschen)
         loeschen.setOnClickListener {
             loeschen(mViewModel.selectetBuchung.value!!.buchungId)
@@ -187,6 +191,8 @@ class DetailFragment : Fragment() {
             navController.navigate(R.id.action_detailFragment_to_mainFragment)
         } else if (mViewModel.herkunft == "Today") {
             navController.navigate(R.id.action_detailFragment_to_todayFragment)
+        } else if (mViewModel.herkunft == "Month"){
+            navController.navigate(R.id.action_detailFragment_to_monthFragment)
         }
     }
 

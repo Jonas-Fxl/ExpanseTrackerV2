@@ -17,13 +17,5 @@
             android:title="Währung" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Account">
-
-        <SwitchPreferenceCompat
-            android:key="pre_loggin"
-            android:title="Eingeloggt bleiben"
-            android:defaultValue="true"/>
-
-    </PreferenceCategory>
 
 </PreferenceScreen>

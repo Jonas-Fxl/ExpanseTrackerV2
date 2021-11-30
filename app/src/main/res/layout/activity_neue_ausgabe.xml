@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Buchung.NeueAusgabe">
 
-    <ImageButton
+    <Button
         android:id="@+id/schliessen"
         android:layout_width="34dp"
         android:layout_height="34dp"

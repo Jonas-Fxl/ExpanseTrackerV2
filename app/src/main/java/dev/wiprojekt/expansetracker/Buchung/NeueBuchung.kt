@@ -1,6 +1,7 @@
 package dev.wiprojekt.expansetracker.Buchung
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
@@ -19,6 +20,7 @@ import dev.wiprojekt.expansetracker.R
 import dev.wiprojekt.expansetracker.data.Buchung
 import dev.wiprojekt.expansetracker.databinding.ActivityNeueAusgabeBinding
 import dev.wiprojekt.expansetracker.databinding.ActivityNeueBuchungBinding
+import dev.wiprojekt.expansetracker.fragments.MainFragment
 import dev.wiprojekt.expansetracker.main.MainViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,8 +37,6 @@ class NeueBuchung : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         val buchungspeichern = findViewById<Button>(R.id.buchungspeichern)
-        val schliessen = findViewById<ImageButton>(R.id.schliessen)
-
 
         val getImage = registerForActivityResult(
             ActivityResultContracts.GetContent(),
@@ -47,6 +47,10 @@ class NeueBuchung : AppCompatActivity() {
 
             }
         )
+
+        binding.schliessen.setOnClickListener {
+            finish()
+        }
 
         binding.takePhoto.setOnClickListener {
 
@@ -68,10 +72,6 @@ class NeueBuchung : AppCompatActivity() {
             if (hasFokus){
                 datumPicker()
             }}
-
-        schliessen.setOnClickListener {
-            finish()
-        }
     }
 
     private fun insertDataToDatabase() {

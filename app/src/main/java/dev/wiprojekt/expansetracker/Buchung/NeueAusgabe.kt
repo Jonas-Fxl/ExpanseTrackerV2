@@ -35,7 +35,6 @@ class NeueAusgabe : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         val buchungspeichern = findViewById<Button>(R.id.buchungspeichern)
-        val schliessen = findViewById<ImageButton>(R.id.schliessen)
 
 
         val getImage = registerForActivityResult(
@@ -69,7 +68,7 @@ class NeueAusgabe : AppCompatActivity() {
             finish()
         }
 
-        schliessen.setOnClickListener {
+        binding.schliessen.setOnClickListener {
             finish()
         }
     }

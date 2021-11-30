@@ -23,6 +23,11 @@ class Registrierung : AppCompatActivity() {
         val et_reg_email = binding.etRegEmail
         val et_lreg_passwort = binding.etLregPasswort
 
+        binding.tvLog.setOnClickListener {
+            intent = Intent(this, Login::class.java)
+            startActivity(intent)
+        }
+
         binding.btnReg.setOnClickListener {
             //Checken ob die Eingabefelder leer sind
             when {
