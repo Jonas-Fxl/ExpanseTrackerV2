@@ -1,17 +1,15 @@
 package dev.wiprojekt.expansetracker
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.result.ActivityResultCallback
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
@@ -60,7 +58,8 @@ class DetailFragment : Fragment() {
             "Hinzugefügt am: " + convertLongToTime(mViewModel.selectetBuchung.value!!.hinzugefuegt)
         buchungID.text = "Buchungs-ID: " + mViewModel.selectetBuchung.value?.buchungId.toString()
 
-        view.findViewById<ImageView>(R.id.fotoPreview).setImageBitmap(mViewModel.selectetBuchung.value?.datei)
+        view.findViewById<ImageView>(R.id.fotoPreview)
+            .setImageBitmap(mViewModel.selectetBuchung.value?.datei)
 
 
         val update = view.findViewById<Button>(R.id.buchungspeichern)
@@ -100,6 +99,13 @@ class DetailFragment : Fragment() {
 
         }
 
+        view.findViewById<EditText>(R.id.datumText).setOnClickListener {
+
+            datumPicker()
+        }
+
+        view.findViewById<EditText>(R.id.datumText).isFocusable = false
+
         return view
     }
 
@@ -134,7 +140,8 @@ class DetailFragment : Fragment() {
 
         if (inputCheck(bezeichnung, summe, datum, art, info)) {
 
-            val buchung = Buchung(id, bezeichnung, art, convertDateToLong(datum), summe, info, bitmap)
+            val buchung =
+                Buchung(id, bezeichnung, art, convertDateToLong(datum), summe, info, bitmap)
             //Enter in Viewmodel
             mViewModel.updateBuchung(buchung)
             Toast.makeText(requireContext(), "Erfolgreich hinzugefügt!", Toast.LENGTH_LONG).show()
@@ -183,8 +190,41 @@ class DetailFragment : Fragment() {
         }
     }
 
-    private fun loeschen(bid: Int){
+    private fun loeschen(bid: Int) {
         mViewModel.deleteBuchung(bid)
         Toast.makeText(requireContext(), "Buchung wurde gelöscht", Toast.LENGTH_LONG).show()
     }
+
+    private fun datumPicker() {
+        val cal = Calendar.getInstance()
+        val tv = view?.findViewById<EditText>(R.id.datumText)
+        val year = cal.get(Calendar.YEAR)
+        val month = cal.get(Calendar.MONTH)
+        var m = ""
+        var d = ""
+        val day = cal.get(Calendar.DAY_OF_MONTH)
+
+        val datePicker = DatePickerDialog(
+            requireContext(),
+            DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                m = if (month + 1 < 10) {
+                    "0" + (month + 1).toString()
+                } else {
+                    (month + 1).toString()
+                }
+                d = if (dayOfMonth < 10) {
+                    "0$dayOfMonth"
+                } else {
+                    dayOfMonth.toString()
+                }
+                tv?.text = ("${d}.${m}.${year}").toEditable()
+            },
+            year,
+            month,
+            day
+        )
+        datePicker.show()
+    }
+
+    fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
 }
