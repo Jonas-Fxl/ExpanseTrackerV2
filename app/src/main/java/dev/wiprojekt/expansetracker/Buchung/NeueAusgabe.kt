@@ -1,6 +1,8 @@
 package dev.wiprojekt.expansetracker.Buchung
 
+import android.app.DatePickerDialog
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
@@ -51,6 +53,16 @@ class NeueAusgabe : AppCompatActivity() {
             getImage.launch("image/*")
 
         }
+
+        binding.datumText.setOnClickListener {
+            datumPicker()
+        }
+
+        binding.datumText.isFocusable = false
+        binding.datumText.setOnFocusChangeListener { _, hasFokus ->
+            if (hasFokus){
+                datumPicker()
+            }}
 
         buchungspeichern.setOnClickListener {
             insertDataToDatabase()
@@ -129,4 +141,36 @@ class NeueAusgabe : AppCompatActivity() {
         val df = SimpleDateFormat("dd.MM.yyyy")
         return df.parse(date).time
     }
+
+    private fun datumPicker() {
+        val cal = Calendar.getInstance()
+        val tv = binding.datumText
+        val year = cal.get(Calendar.YEAR)
+        val month = cal.get(Calendar.MONTH)
+        var m = ""
+        var d = ""
+        val day = cal.get(Calendar.DAY_OF_MONTH)
+        val datePicker = DatePickerDialog(
+            this,
+            DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                m = if (month + 1 < 10) {
+                    "0" + (month + 1).toString()
+                } else {
+                    (month + 1).toString()
+                }
+                d = if (dayOfMonth < 10) {
+                    "0$dayOfMonth"
+                } else {
+                    dayOfMonth.toString()
+                }
+                tv.text = ("${d}.${m}.${year}").toEditable()
+            },
+            year,
+            month,
+            day
+        )
+        datePicker.show()
+    }
+
+    fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
 }
