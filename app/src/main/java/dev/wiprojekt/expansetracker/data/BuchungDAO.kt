@@ -38,12 +38,12 @@ interface BuchungDAO {
     fun getAllExpenseHeute(date: Long, uid: String): Double
 
     //Monat
-    @Query("SELECT * FROM buchungen WHERE datum > :startDatum AND datum < :endDatum AND uid == :uid" )
+    @Query("SELECT * FROM buchungen WHERE datum >= :startDatum AND datum < :endDatum AND uid == :uid" )
     fun getAllBuchungenMonat(startDatum: Long, endDatum: Long, uid: String): List<Buchung> // enddatum mussd er 01. des nächsten Monats sein!
 
-    @Query("SELECT SUM(summe) FROM buchungen WHERE datum BETWEEN :startDatum AND :endDatum AND datum != :endDatum AND uid == :uid" )
+    @Query("SELECT SUM(summe) FROM buchungen WHERE datum >= :startDatum AND datum < :endDatum AND uid == :uid AND summe > 0")
     fun getAllIncomeMonth(startDatum: Long, endDatum: Long, uid: String): Double
 
-    @Query("SELECT SUM(summe) FROM buchungen WHERE datum BETWEEN :startDatum AND :endDatum AND datum != :endDatum AND uid == :uid")
+    @Query("SELECT SUM(summe) FROM buchungen WHERE datum >= :startDatum AND datum < :endDatum AND uid == :uid AND summe < 0")
     fun getAllExpenseMonth(startDatum: Long, endDatum: Long, uid: String): Double
 }
