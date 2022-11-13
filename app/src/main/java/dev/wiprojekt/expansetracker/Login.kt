@@ -1,9 +1,9 @@
 package dev.wiprojekt.expansetracker
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import dev.wiprojekt.expansetracker.preferences.PrefHelper
 import java.util.Calendar
 
 
@@ -19,6 +20,17 @@ class Login : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        if (prefLogin()) {
+            val intent = Intent(this@Login, MainActivity::class.java)
+            intent.flags =
+                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK // cleart überflüssige Activitys im Background
+
+            intent.putExtra("user_id", FirebaseAuth.getInstance().currentUser!!.uid)
+            startActivity(intent)
+            updateUser()
+            finish()
+        }
 
         val tvReg = findViewById<TextView>(R.id.tv_reg)
         val btnLogin = findViewById<Button>(R.id.btn_login)
@@ -103,5 +115,12 @@ class Login : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    fun prefLogin(): Boolean {
+        val pref = PrefHelper
+        pref.loadSettings(applicationContext)
+        Log.i(LOG_TAG, "Jonas: ${pref.loggin}")
+        return pref.loggin
     }
 }

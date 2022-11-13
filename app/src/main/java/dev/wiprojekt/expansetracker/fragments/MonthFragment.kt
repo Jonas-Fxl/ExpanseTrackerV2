@@ -81,16 +81,15 @@ class MonthFragment : Fragment(),
         val cal = Calendar.getInstance()
         val month = cal.get(Calendar.MONTH)
         val year = cal.get(Calendar.YEAR)
-        var m = ""
-        m = if (month + 1 < 10) {
+        val m: String = if (month + 1 < 10) {
             "0" + (month + 1).toString()
         } else {
             (month + 1).toString()
         }
         val startDatum = "01.${m}.${year}"
-        val endDatum = "01.${m+1}.${year}"
+        val endDatum = "31.${m}.${year}"
 
-        val data = mViewModel.getAllBuchungenMonat(convertDateToLong(startDatum), convertDateToLong(endDatum), uid)
+        val data = mViewModel.getAllBuchungenMonat(convertDateToLong(startDatum), convertDateToLong(endDatum), uid).sortedBy { it.datum }
         for (buchung in data) {
             val adapter = MainRecyclerAdapter(requireContext(), data, this)
             recyclerView.adapter = adapter
@@ -101,10 +100,10 @@ class MonthFragment : Fragment(),
 
         val pref = PrefHelper
         pref.loadSettings(requireContext())
-        val tagesBudget = pref.budget.toDouble() * 12
+        val monatsBudget = pref.budget.toDouble()
         einnahme.text = "%.2f ${PrefHelper.currency}".format(einnahmeVal)
         ausgabe.text = "%.2f ${PrefHelper.currency}".format(ausgabeVal)
-        budget.text = "%.2f ${PrefHelper.currency}".format(tagesBudget + einnahmeVal + ausgabeVal)
+        budget.text = "%.2f ${PrefHelper.currency}".format(monatsBudget + einnahmeVal + ausgabeVal)
 
     }
 

@@ -10,14 +10,14 @@ class PrefHelper {
 
     companion object {
 
-        lateinit var currency : String
-        lateinit var loggin : String
-        lateinit var budget : String
+        lateinit var currency: String
+        var loggin by Delegates.notNull<Boolean>()
+        lateinit var budget: String
 
         fun loadSettings(context: Context) {
             val sp = PreferenceManager.getDefaultSharedPreferences(context)
             currency = sp.getString("pre_cur", "EUR")!!
-            loggin = sp.getBoolean("pre_loggin", true).toString()
+            loggin = sp.getBoolean("pre_angmeldet", false)
             budget = sp.getString("pre_budget", "0").toString()
         }
     }

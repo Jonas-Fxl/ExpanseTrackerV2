@@ -17,5 +17,11 @@
             android:title="Währung" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="Anmelden">
 
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="pre_angmeldet"
+        android:title="Angmeldet bleiben" />
+    </PreferenceCategory>
 </PreferenceScreen>
