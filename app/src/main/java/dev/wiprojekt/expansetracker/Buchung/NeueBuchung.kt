@@ -39,14 +39,13 @@ class NeueBuchung : AppCompatActivity() {
         val buchungspeichern = findViewById<Button>(R.id.buchungspeichern)
 
         val getImage = registerForActivityResult(
-            ActivityResultContracts.GetContent(),
-            ActivityResultCallback {
+            ActivityResultContracts.GetContent()
+        ) {
 
-                binding.fotoPreview.setImageURI(it)
-                Log.i(LOG_TAG, "Hinzugefuegt: " + it.toString())
+            binding.fotoPreview.setImageURI(it)
+            Log.i(LOG_TAG, "Hinzugefuegt: " + it.toString())
 
-            }
-        )
+        }
 
         binding.schliessen.setOnClickListener {
             finish()
